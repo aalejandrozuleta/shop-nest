@@ -1,0 +1,17 @@
+{
+  "out": "docs",
+  "theme": "default",
+  "readme": "README.md",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "exclude": ["**/*.swagger.ts", "src/*/infrastructure/http/*.routes.ts"],
+  "entryPoints": ["src/main.ts"],
+  "entryPointStrategy": "expand",
+  "name": "Shop Nest",
+  "includeVersion": true,
+  "hideGenerator": true,
+  "excludeInternal": true,
+  "navigationLinks": {
+    "GitHub": "https://github.com/aalejandrozuleta/shop-nest"
+  }
+}

@@ -1,25 +1,34 @@
-// src/shared/config/logger/logger.service.ts
 import { LoggerService } from '@nestjs/common';
 import { createLogger, transports, format } from 'winston';
 
 export class AppLogger implements LoggerService {
   private logger = createLogger({
-    format: format.combine(
-      format.timestamp(),
-      format.json(),
-    ),
+    format: format.combine(format.timestamp(), format.json()),
     transports: [new transports.Console()],
   });
 
-  log(message: string) {
+  /**
+   * Registra un mensaje de información.
+   * @param message - Mensaje a registrar
+   */
+  log(message: string): void {
     this.logger.info(message);
   }
 
-  error(message: string, trace: string) {
+  /**
+   * Registra un mensaje de error con un trace (stack trace).
+   * @param message - Mensaje de error
+   * @param trace - Traza del error
+   */
+  error(message: string, trace: string): void {
     this.logger.error({ message, trace });
   }
 
-  warn(message: string) {
+  /**
+   * Registra un mensaje de advertencia.
+   * @param message - Mensaje de advertencia
+   */
+  warn(message: string): void {
     this.logger.warn(message);
   }
 }

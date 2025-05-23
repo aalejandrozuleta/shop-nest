@@ -4,7 +4,6 @@ import { HealthController } from './health.controller';
 import { RedisModule } from '../../providers/redis/redis.module';
 import { HealthCheckServiceCustom } from './health.service';
 
-
 @Module({
   imports: [TerminusModule, RedisModule],
   controllers: [HealthController],

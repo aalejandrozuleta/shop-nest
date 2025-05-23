@@ -16,13 +16,13 @@ export class UserEntity {
       twoFactorSecret: string | null;
       rememberCard: boolean;
       password: string;
-    }
-  ) { }
+    },
+  ) {}
 
   /**
-  * Crea una nueva instancia desde un objeto plano.
-  * @param props Objeto con las propiedades del usuario.
-  */
+   * Crea una nueva instancia desde un objeto plano.
+   * @param props Objeto con las propiedades del usuario.
+   */
   /**
    * Crea una nueva instancia desde un objeto plano.
    * @param props Objeto con las propiedades del usuario.
@@ -43,7 +43,6 @@ export class UserEntity {
   }): UserEntity {
     return new UserEntity(props);
   }
-
 
   /**
    * Convierte la entidad a un objeto plano para persistencia.
@@ -176,7 +175,9 @@ export class UserEntity {
    * @param secret Clave secreta para 2FA.
    */
   enableTwoFactor(secret: string): UserEntity {
-    if (!secret) throw new Error('Two-factor secret is required');
+    if (!secret) {
+      throw new Error('Two-factor secret is required');
+    }
     return new UserEntity({
       ...this.props,
       twoFactorEnabled: true,

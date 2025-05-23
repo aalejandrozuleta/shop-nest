@@ -5,12 +5,16 @@ import { AppLogger } from './shared/config/logger/logger.service';
 import { UsersModule } from './modules/users/infrastructure/users.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({
-    envFilePath: ['.env.development', '.env.test', '.env', '.env.production'],
-    isGlobal: true,
-  }), HealthModule, UsersModule],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: ['.env.development', '.env.test', '.env', '.env.production'],
+      isGlobal: true,
+    }),
+    HealthModule,
+    UsersModule,
+  ],
   controllers: [],
   providers: [AppLogger],
   exports: [],
 })
-export class AppModule { }
+export class AppModule {}

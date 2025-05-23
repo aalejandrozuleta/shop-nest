@@ -1,8 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import {
-  HealthCheckService,
-  HealthIndicatorFunction,
-} from '@nestjs/terminus';
+import { HealthCheckService, HealthIndicatorFunction } from '@nestjs/terminus';
 import { PrismaClient } from '@prisma/client';
 import Redis from 'ioredis';
 
@@ -25,7 +22,7 @@ export class HealthCheckServiceCustom {
     try {
       await this.redis.ping();
       return { redis: { status: 'up' } };
-    } catch (error) {
+    } catch {
       return { redis: { status: 'down' } };
     }
   };
@@ -37,7 +34,7 @@ export class HealthCheckServiceCustom {
     try {
       await this.prisma.$queryRaw`SELECT 1`;
       return { prisma: { status: 'up' } };
-    } catch (error) {
+    } catch {
       return { prisma: { status: 'down' } };
     }
   };

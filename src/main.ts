@@ -10,12 +10,12 @@ import rateLimit from '@fastify/rate-limit';
 import { ENV } from './shared/config/env/env.service';
 import { printRoutesByMethod } from './shared/config/logger/printRoutesByMethod';
 
-
 /**
  * Punto de entrada principal de la aplicación NestJS usando Fastify.
  * Configura seguridad, CORS, limitación de peticiones y logger personalizado.
+ * @returns Promise<void>
  */
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   // Crear la aplicación NestJS con adaptador Fastify
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
@@ -53,4 +53,8 @@ async function bootstrap() {
   printRoutesByMethod(app);
 }
 
-bootstrap();
+// Manejar errores en bootstrap para no dejar promesas colgadas
+bootstrap().catch((error) => {
+  console.error('Error arrancando la aplicación:', error);
+  process.exit(1);
+});

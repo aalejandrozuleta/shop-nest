@@ -5,15 +5,16 @@ import { UserRepository } from '../domain/repositories/user.repository';
 import { PrismaUserRepository } from './prisma/prisma-user.repository';
 import { DatabaseModule } from './database/database.module';
 
-
 @Module({
   imports: [DatabaseModule],
   controllers: [RegisterController],
-  providers: [RegisterUseCase,
+  providers: [
+    RegisterUseCase,
     {
       provide: UserRepository,
       useClass: PrismaUserRepository,
-    },],
+    },
+  ],
   exports: [],
 })
-export class UsersModule { }
+export class UsersModule {}

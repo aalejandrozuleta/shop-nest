@@ -7,11 +7,13 @@ import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class RegisterUseCase {
-  constructor(private readonly userRepository: UserRepository) { }
+  constructor(private readonly userRepository: UserRepository) {}
 
   async execute(dto: RegisterDto): Promise<UserEntity> {
     const exists = await this.userRepository.findByEmail(dto.email);
-    if (exists) throw new Error('El correo ya está registrado');
+    if (exists) {
+      throw new Error('El correo ya está registrado');
+    }
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
@@ -22,7 +24,6 @@ export class RegisterUseCase {
       password: hashedPassword,
       recoveryCode: randomUUID(),
     });
-
 
     await this.userRepository.save(user);
     return user;

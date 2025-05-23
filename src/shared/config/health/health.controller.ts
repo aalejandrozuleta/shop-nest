@@ -1,5 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { HealthCheck, HealthCheckService } from '@nestjs/terminus';
+import {
+  HealthCheck,
+  HealthCheckService,
+  HealthCheckResult,
+} from '@nestjs/terminus';
 import { HealthCheckServiceCustom } from './health.service';
 
 /**
@@ -14,10 +18,11 @@ export class HealthController {
 
   /**
    * Endpoint que ejecuta los chequeos de Prisma y Redis
+   * @returns Resultado de los chequeos de salud
    */
   @Get()
   @HealthCheck()
-  check() {
+  check(): Promise<HealthCheckResult> {
     return this.health.check(this.customChecks.getChecks());
   }
 }

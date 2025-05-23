@@ -1,8 +1,11 @@
-// src/shared/config/swagger/swagger.config.ts
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication } from '@nestjs/common';
 
-export function setupSwagger(app: INestApplication) {
+/**
+ * Configura Swagger para la documentación de la API
+ * @param app Aplicación NestJS
+ */
+export function setupSwagger(app: INestApplication): void {
   const config = new DocumentBuilder()
     .setTitle('Mi API')
     .setDescription('Documentación de endpoints')
