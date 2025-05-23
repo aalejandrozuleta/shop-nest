@@ -1,0 +1,10 @@
+{
+  "a-file-icon-vscode.arrowTheme": "material",
+  "a-file-icon-vscode.folderColor": "#4b526d",
+  "a-file-icon-vscode.activeIconPacks": [
+    "angular",
+    "next",
+    "react",
+    "rails"
+  ]
+}

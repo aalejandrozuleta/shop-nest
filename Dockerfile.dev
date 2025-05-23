@@ -1,0 +1,26 @@
+FROM node:22
+
+# Instalación de herramientas necesarias
+RUN apt-get update && apt-get install -y zsh git postgresql-client-16 curl
+
+# Instalación de Oh My Zsh
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+RUN chsh -s $(which zsh)
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY prisma ./prisma
+RUN npm ci
+
+# Generamos Prisma Client dentro del contenedor
+RUN npx prisma generate
+
+COPY . .
+
+EXPOSE 3000
+
+COPY scripts/server/start.sh ./scripts/server/start.sh
+RUN chmod +x ./scripts/server/start.sh
+
+CMD [ "./scripts/server/start.sh" ]

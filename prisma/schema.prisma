@@ -1,0 +1,121 @@
+/// Esquema completo de base de datos para una tienda tipo supermercado usando Prisma ORM
+/// Este diseño incluye usuarios con seguridad avanzada, productos, roles, pedidos, transacciones, y más
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String     @id @default(uuid())
+  name              String
+  email             String     @unique
+  recoveryEmail     String     
+  password          String
+  isEmailVerified   Boolean    @default(false)
+  securityQuestion  String
+  securityAnswer    String
+  recoveryCode      String     @unique // Código autogenerate único
+  twoFactorEnabled  Boolean    @default(false)
+  twoFactorSecret   String?
+  rememberCard      Boolean    @default(false)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  roles             UserRole[]
+  transactions      Transaction[]
+  orders            Order[]
+  logs              Log[]
+}
+
+model Role {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  users     UserRole[]
+}
+
+model UserRole {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId String
+
+  @@unique([userId, roleId])
+}
+
+model Product {
+  id             String       @id @default(uuid())
+  name           String
+  description    String
+  price          Float
+  stock          Int
+  imageUrl       String?
+  category       String
+  discount       Float        @default(0)
+  discountUntil  DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  orderItems     OrderItem[] // Relación inversa
+}
+
+model Order {
+  id         String     @id @default(uuid())
+  user       User       @relation(fields: [userId], references: [id])
+  userId     String
+  createdAt  DateTime   @default(now())
+
+  items      OrderItem[]
+  payment    Payment?
+  shipment   Shipment?  // Relación inversa
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int
+}
+
+model Payment {
+  id         String   @id @default(uuid())
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    String   @unique
+  amount     Float
+  method     String
+  paidAt     DateTime @default(now())
+}
+
+model Shipment {
+  id         String   @id @default(uuid())
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    String   @unique
+  status     String   @default("pending")
+  shippedAt  DateTime?
+  deliveredAt DateTime?
+}
+
+model Transaction {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  amount     Float
+  createdAt  DateTime @default(now())
+  description String?
+}
+
+model Log {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  message    String
+  createdAt  DateTime @default(now())
+}
