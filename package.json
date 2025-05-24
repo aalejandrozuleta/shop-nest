@@ -32,7 +32,7 @@
     "database:delete": "sh ./scripts/database/deleteDatabase.sh"
   },
   "lint-staged": {
-    "*.{ts,js,json,md}": [
+    "*.{ts,json}": [
       "npm run format",
       "npm run docs",
       "npm run lint"
