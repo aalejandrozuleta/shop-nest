@@ -4,10 +4,15 @@ import { RegisterDto } from '../dto/register.dto';
 import { UserEntity } from '../../domain/entities/user.entity';
 import { randomUUID } from 'crypto';
 import * as bcrypt from 'bcryptjs';
+import { SendEmailEvent } from 'src/shared/infrastructure/events/send-email.event';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class RegisterUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
   async execute(dto: RegisterDto): Promise<UserEntity> {
     const exists = await this.userRepository.findByEmail(dto.email);
@@ -26,6 +31,17 @@ export class RegisterUseCase {
     });
 
     await this.userRepository.save(user);
+
+    this.eventEmitter.emit(
+      'email.send',
+      new SendEmailEvent(
+        user.email,
+        '¡Bienvenido a nuestra plataforma!',
+        'welcome', // nombre del archivo HTML sin extensión
+        { name: user.name },
+      ),
+    );
+
     return user;
   }
 }

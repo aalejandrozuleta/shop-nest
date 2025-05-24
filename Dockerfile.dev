@@ -1,7 +1,7 @@
 FROM node:22
 
 # Instalación de herramientas necesarias
-RUN apt-get update && apt-get install -y zsh git postgresql-client-16 curl
+RUN apt-get update && apt-get install -y zsh git postgresql-client curl
 
 # Instalación de Oh My Zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended

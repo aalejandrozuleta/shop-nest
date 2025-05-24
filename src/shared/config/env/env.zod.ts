@@ -6,4 +6,6 @@ export const envSchema = z.object({
   REDIS_URL: z.string(),
   DATABASE_URL: z.string(),
   CORS_ORIGIN: z.string().optional(),
+  RESEND_API_KEY: z.string(),
+  FROM_RESEND: z.string(),
 });

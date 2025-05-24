@@ -6,6 +6,8 @@ import {
 } from '@nestjs/common';
 import { RegisterUseCase } from 'src/modules/users/application/use-cases/register.use-case';
 import { RegisterDto } from 'src/modules/users/application/dto/register.dto';
+import { registerUserSchema } from '../../schemas/register-user.schema';
+import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
 
 interface RegisterResponse {
   message: string;
@@ -13,6 +15,7 @@ interface RegisterResponse {
     id: string;
     email: string;
     name: string;
+    recoveryCode: string;
   };
 }
 
@@ -26,7 +29,9 @@ export class RegisterController {
    * @returns Promesa con mensaje y datos del usuario registrado
    */
   @Post('register')
-  async register(@Body() dto: RegisterDto): Promise<RegisterResponse> {
+  async register(
+    @Body(new ZodValidationPipe(registerUserSchema)) dto: RegisterDto,
+  ): Promise<RegisterResponse> {
     try {
       const user = await this.registerUseCase.execute(dto);
       return {
@@ -35,6 +40,7 @@ export class RegisterController {
           id: user.id,
           email: user.email,
           name: user.name,
+          recoveryCode: user.recoveryCode,
         },
       };
     } catch (error: unknown) {
