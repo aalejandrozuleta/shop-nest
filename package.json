@@ -29,7 +29,8 @@
     "docker:start": "sh ./scripts/server/start.sh",
     "docker:open-db": "sh ./scripts/docker/openDatabase.sh",
     "database:create": "sh ./scripts/database/createDatabase.sh",
-    "database:delete": "sh ./scripts/database/deleteDatabase.sh"
+    "database:delete": "sh ./scripts/database/deleteDatabase.sh",
+    "ci": "npm run format && npm run lint && npm run test && npm run build && npm run docs:ci"
   },
   "lint-staged": {
     "*.{ts,js,json,md}": [
